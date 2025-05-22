@@ -8,16 +8,18 @@
 import SwiftUI
 
 struct MoodButton: View {
-    let emoji: String
+    let image: String
     let label: String
 
     var body: some View {
         VStack(spacing: 4) {
-            Text(emoji)
-                .font(.system(size: 32))
+            Image(image) 
+                .resizable()
+                .scaledToFit()
                 .frame(width: 48, height: 48)
                 .background(Color(.systemGray6))
                 .clipShape(Circle())
+            
             Text(label)
                 .font(AppFont.Poppins.regular(12))
                 .foregroundColor(.primary)

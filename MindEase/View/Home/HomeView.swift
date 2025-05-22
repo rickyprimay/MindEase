@@ -44,12 +44,13 @@ struct HomeView: View {
                             .padding(.bottom)
                         
                         HStack(spacing: 24) {
-                            MoodButton(emoji: "😊", label: "Good")
-                            MoodButton(emoji: "🥰", label: "Joyful")
-                            MoodButton(emoji: "😢", label: "Sad")
-                            MoodButton(emoji: "😐", label: "Bored")
-                            MoodButton(emoji: "😡", label: "Angry")
+                            MoodButton(image: "Good", label: "Senang")
+                            MoodButton(image: "Joyful", label: "Gembira")
+                            MoodButton(image: "Sad", label: "Sedih")
+                            MoodButton(image: "Bored", label: "Bosan")
+                            MoodButton(image: "Angry", label: "Marah")
                         }
+
                     }
                     .padding(.vertical, 24)
                     .padding(.horizontal, 16)
