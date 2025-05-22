@@ -1,5 +1,5 @@
 {
-  "originHash" : "6cf54f51871fbff6d56248c65505803629fca96570170b42f52fdf3c7bec5ca5",
+  "originHash" : "06d53ea3558ac50d41ac10b5d0b4dca60db6cd96667e36df6e31b89a814856f4",
   "pins" : [
     {
       "identity" : "abseil-cpp-binary",
@@ -8,6 +8,15 @@
       "state" : {
         "revision" : "bbe8b69694d7873315fd3a4ad41efe043e1c07c5",
         "version" : "1.2024072200.0"
+      }
+    },
+    {
+      "identity" : "alamofire",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/Alamofire/Alamofire.git",
+      "state" : {
+        "revision" : "513364f870f6bfc468f9d2ff0a95caccc10044c5",
+        "version" : "5.10.2"
       }
     },
     {
@@ -35,6 +44,15 @@
       "state" : {
         "revision" : "3663b1aa6c7a1bed67ee80fd09dc6d0f9c3bb660",
         "version" : "11.13.0"
+      }
+    },
+    {
+      "identity" : "generative-ai-swift",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/google-gemini/generative-ai-swift",
+      "state" : {
+        "revision" : "44b8ce120425f9cf53ca756f3434ca2c2696f8bd",
+        "version" : "0.5.6"
       }
     },
     {

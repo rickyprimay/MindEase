@@ -17,7 +17,9 @@ struct MindEaseApp: App {
             if !isSignIn {
                 LoginView()
             } else {
-                DiscoverView()
+                NavigationStack {
+                    DiscoverView()
+                }
             }
         }
     }

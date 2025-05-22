@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		EA0751C62DDF01E900E9B5DA /* GoogleGenerativeAI in Frameworks */ = {isa = PBXBuildFile; productRef = EA0751C52DDF01E900E9B5DA /* GoogleGenerativeAI */; };
+		EA0751C92DDF021500E9B5DA /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = EA0751C82DDF021500E9B5DA /* Alamofire */; };
 		EA427D102DDE1C2F0006FBDD /* SDWebImageSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = EA427D0F2DDE1C2F0006FBDD /* SDWebImageSwiftUI */; };
 		EAD9C65B2DDDF37F006FBDD9 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = EAD9C65A2DDDF37F006FBDD9 /* FirebaseAnalytics */; };
 		EAD9C65D2DDDF37F006FBDD9 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = EAD9C65C2DDDF37F006FBDD9 /* FirebaseAuth */; };
@@ -53,6 +55,7 @@
 				EAD9C6652DDDF37F006FBDD9 /* FirebaseMessaging in Frameworks */,
 				EAD9C65B2DDDF37F006FBDD9 /* FirebaseAnalytics in Frameworks */,
 				EAD9C6612DDDF37F006FBDD9 /* FirebaseCrashlytics in Frameworks */,
+				EA0751C62DDF01E900E9B5DA /* GoogleGenerativeAI in Frameworks */,
 				EAD9C6672DDDF37F006FBDD9 /* FirebaseRemoteConfig in Frameworks */,
 				EAD9C65F2DDDF37F006FBDD9 /* FirebaseCore in Frameworks */,
 				EAD9C66E2DDDF69D006FBDD9 /* GoogleSignInSwift in Frameworks */,
@@ -61,6 +64,7 @@
 				EA427D102DDE1C2F0006FBDD /* SDWebImageSwiftUI in Frameworks */,
 				EAD9C65D2DDDF37F006FBDD9 /* FirebaseAuth in Frameworks */,
 				EAD9C66C2DDDF69D006FBDD9 /* GoogleSignIn in Frameworks */,
+				EA0751C92DDF021500E9B5DA /* Alamofire in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -114,6 +118,8 @@
 				EAD9C66B2DDDF69D006FBDD9 /* GoogleSignIn */,
 				EAD9C66D2DDDF69D006FBDD9 /* GoogleSignInSwift */,
 				EA427D0F2DDE1C2F0006FBDD /* SDWebImageSwiftUI */,
+				EA0751C52DDF01E900E9B5DA /* GoogleGenerativeAI */,
+				EA0751C82DDF021500E9B5DA /* Alamofire */,
 			);
 			productName = MindEase;
 			productReference = EAD9C6462DDDEF6F006FBDD9 /* MindEase.app */;
@@ -147,6 +153,8 @@
 				EAD9C6592DDDF37F006FBDD9 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 				EAD9C66A2DDDF69D006FBDD9 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */,
 				EA427D0E2DDE1C2F0006FBDD /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */,
+				EA0751C42DDF01E900E9B5DA /* XCRemoteSwiftPackageReference "generative-ai-swift" */,
+				EA0751C72DDF021500E9B5DA /* XCRemoteSwiftPackageReference "Alamofire" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = EAD9C6472DDDEF6F006FBDD9 /* Products */;
@@ -382,6 +390,22 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		EA0751C42DDF01E900E9B5DA /* XCRemoteSwiftPackageReference "generative-ai-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/google-gemini/generative-ai-swift";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.5.6;
+			};
+		};
+		EA0751C72DDF021500E9B5DA /* XCRemoteSwiftPackageReference "Alamofire" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Alamofire/Alamofire.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.10.2;
+			};
+		};
 		EA427D0E2DDE1C2F0006FBDD /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/SDWebImage/SDWebImageSwiftUI.git";
@@ -409,6 +433,16 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		EA0751C52DDF01E900E9B5DA /* GoogleGenerativeAI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = EA0751C42DDF01E900E9B5DA /* XCRemoteSwiftPackageReference "generative-ai-swift" */;
+			productName = GoogleGenerativeAI;
+		};
+		EA0751C82DDF021500E9B5DA /* Alamofire */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = EA0751C72DDF021500E9B5DA /* XCRemoteSwiftPackageReference "Alamofire" */;
+			productName = Alamofire;
+		};
 		EA427D0F2DDE1C2F0006FBDD /* SDWebImageSwiftUI */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = EA427D0E2DDE1C2F0006FBDD /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */;

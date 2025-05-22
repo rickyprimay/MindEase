@@ -17,11 +17,11 @@ struct ChatMessage: Identifiable {
 struct ChatView: View {
     @Environment(\.dismiss) var dismiss
     @State private var messages: [ChatMessage] = [
-        .init(text: "Hello, Summer 👋✨", isUser: false, isSuggestion: false),
-        .init(text: "How are you feeling today?", isUser: false, isSuggestion: false),
-        .init(text: "I'm here to listen and help you with anything on your mind.", isUser: false, isSuggestion: false),
-        .init(text: "Please recommend me mindfulness exercise to help me relax.", isUser: true, isSuggestion: false),
-        .init(text: "Sure!👍 Here’s a simple mindfulness exercise you can try.", isUser: false, isSuggestion: false)
+        .init(text: "Halo, Ricky Prima!👋✨", isUser: false, isSuggestion: false),
+        .init(text: "Apa kabar kamu hari ini?", isUser: false, isSuggestion: false),
+        .init(text: "Aku di sini untuk mendengarkan dan membantu apapun yang sedang kamu pikirkan.", isUser: false, isSuggestion: false),
+        .init(text: "Tolong rekomendasikan latihan mindfulness untuk membantuku rileks.", isUser: true, isSuggestion: false),
+        .init(text: "Tentu!👍 Berikut latihan mindfulness sederhana yang bisa kamu coba.", isUser: false, isSuggestion: false)
     ]
     @State private var inputText: String = ""
     
@@ -38,8 +38,9 @@ struct ChatView: View {
                                     HStack {
                                         Spacer()
                                         Text(msg.text)
+                                            .font(AppFont.Poppins.regular(14))
                                             .padding()
-                                            .background(Color("PastelYellow"))
+                                            .background(Color("PastelYellow").opacity(0.6))
                                             .foregroundColor(.black)
                                             .cornerRadius(16)
                                             .frame(maxWidth: 260, alignment: .trailing)
@@ -48,6 +49,7 @@ struct ChatView: View {
                                 } else {
                                     HStack {
                                         Text(msg.text)
+                                            .font(AppFont.Poppins.regular(14))
                                             .padding()
                                             .background(Color.white)
                                             .foregroundColor(.black)
@@ -58,63 +60,75 @@ struct ChatView: View {
                                     .padding(.horizontal)
                                 }
                             }
-                            
-                            HStack(spacing: 16) {
-                                SuggestionCard(icon: "brain.head.profile", color: Color("PastelYellow"), title: "Breathing Exercise")
-                                SuggestionCard(icon: "tv", color: Color("PastelBlue"), title: "Body Scan Meditation")
-                            }
-                            .padding(.top, 8)
-                            .padding(.horizontal)
                         }
                         .padding(.vertical, 16)
                     }
                 }
                 
+                ScrollView(.horizontal, showsIndicators: false) {
+                    HStack(spacing: 12) {
+                        SuggestionCard(icon: "brain.head.profile", color: Color("PastelYellow"), title: "Latihan Pernapasan")
+                        SuggestionCard(icon: "tv", color: Color("PastelBlue"), title: "Meditasi Pemindaian Tubuh")
+                        SuggestionCard(icon: "waveform.path.ecg", color: Color("PastelGreen"), title: "Relaksasi Detak Jantung")
+                        SuggestionCard(icon: "music.note", color: Color("PastelPink"), title: "Suara Menenangkan")
+                    }
+                    .padding(.horizontal)
+                    .padding(.bottom, 8)
+                }
+                
                 HStack(spacing: 12) {
-                    TextField("Ask me anything", text: $inputText)
+                    TextField("Tanyakan apa saja..", text: $inputText)
                         .padding(12)
                         .background(Color.white)
                         .cornerRadius(20)
                         .font(.system(size: 16))
                     
                     Button {
-                        // mic action
+                        // Tambahkan aksi kirim pesan
                     } label: {
-                        Image(systemName: "mic.fill")
-                            .foregroundColor(Color("PastelBlue"))
-                            .font(.system(size: 22))
-                    }
-                    
-                    Button {
-                        // send action
-                    } label: {
-                        Image(systemName: "paperplane.fill")
+                        Image(systemName: "paperplane")
                             .foregroundColor(.white)
                             .padding(10)
-                            .background(Color("PastelBlue"))
+                            .background(.black)
                             .clipShape(Circle())
                     }
                 }
                 .padding(.horizontal)
                 .padding(.vertical, 8)
-                .background(Color(.systemGroupedBackground).opacity(0.9))
             }
         }
-        .navigationTitle("AI Therapist")
+        .navigationBarBackButtonHidden()
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
+            ToolbarItem(placement: .principal) {
+                Text("Terapis AI")
+                    .font(AppFont.Poppins.regular(16))
+                    .foregroundColor(.black)
+            }
             ToolbarItem(placement: .navigationBarLeading) {
                 Button(action: {
                     dismiss()
                 }) {
                     Image(systemName: "chevron.left")
-                        .foregroundColor(.blue)
+                        .font(AppFont.Poppins.extraLight(13))
+                        .foregroundColor(.black)
+                        .frame(width: 40, height: 40)
+                        .background(
+                            Circle()
+                                .fill(Color.white)
+                        )
                 }
             }
             ToolbarItem(placement: .navigationBarTrailing) {
                 NavigationLink(destination: ChatHistoryView()) {
                     Image(systemName: "clock.arrow.circlepath")
-                        .foregroundColor(.blue)
+                        .font(AppFont.Poppins.extraLight(13))
+                        .foregroundColor(.black)
+                        .frame(width: 40, height: 40)
+                        .background(
+                            Circle()
+                                .fill(Color.white)
+                        )
                 }
             }
         }
@@ -129,7 +143,6 @@ struct ChatHistoryView: View {
     }
 }
 
-
 struct SuggestionCard: View {
     let icon: String
     let color: Color
@@ -138,10 +151,10 @@ struct SuggestionCard: View {
     var body: some View {
         VStack(spacing: 8) {
             Image(systemName: icon)
-                .font(.system(size: 32))
+                .font(AppFont.Poppins.bold(32))
                 .foregroundColor(color)
             Text(title)
-                .font(.system(size: 15, weight: .medium))
+                .font(AppFont.Poppins.regular(14))
                 .foregroundColor(.black)
                 .multilineTextAlignment(.center)
         }

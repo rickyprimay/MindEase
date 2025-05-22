@@ -16,7 +16,7 @@ struct DiscoverView: View {
                 switch selectedIndex {
                 case 0: HomeView()
                 case 1: Text("Explore")
-                case 2: NavigationView { AIView() }
+                case 2: AIView()
                 case 3: Text("Stats")
                 case 4: Text("Setting")
                 default: HomeView()
