@@ -12,11 +12,11 @@ struct CustomTabBar: View {
 
     var body: some View {
         HStack {
-            CustomTabBarItem(icon: "house.fill", title: "Home", isSelected: selectedIndex == 0, isCenter: false) {
+            CustomTabBarItem(icon: "house.fill", title: "Beranda", isSelected: selectedIndex == 0, isCenter: false) {
                 selectedIndex = 0
             }
             Spacer()
-            CustomTabBarItem(icon: "book.pages.fill", title: "Explore", isSelected: selectedIndex == 1, isCenter: false) {
+            CustomTabBarItem(icon: "book.pages.fill", title: "Artikel", isSelected: selectedIndex == 1, isCenter: false) {
                 selectedIndex = 1
             }
             Spacer()
@@ -24,11 +24,11 @@ struct CustomTabBar: View {
                 selectedIndex = 2
             }
             Spacer()
-            CustomTabBarItem(icon: "chart.bar", title: "Stats", isSelected: selectedIndex == 3, isCenter: false) {
+            CustomTabBarItem(icon: "chart.bar", title: "Status", isSelected: selectedIndex == 3, isCenter: false) {
                 selectedIndex = 3
             }
             Spacer()
-            CustomTabBarItem(icon: "gearshape", title: "Setting", isSelected: selectedIndex == 4, isCenter: false) {
+            CustomTabBarItem(icon: "gearshape", title: "Pengaturan", isSelected: selectedIndex == 4, isCenter: false) {
                 selectedIndex = 4
             }
         }

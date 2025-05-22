@@ -43,7 +43,7 @@ struct HomeView: View {
                             .font(AppFont.Poppins.bold(18))
                             .padding(.bottom)
                         
-                        HStack(spacing: 24) {
+                        HStack(spacing: 22) {
                             MoodButton(image: "Good", label: "Senang")
                             MoodButton(image: "Joyful", label: "Gembira")
                             MoodButton(image: "Sad", label: "Sedih")
