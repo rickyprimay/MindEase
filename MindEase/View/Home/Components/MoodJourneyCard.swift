@@ -9,13 +9,12 @@ import SwiftUI
 
 struct MoodJourneyCard: View {
     var progress: CGFloat
-    var parallaxOffset: CGFloat
 
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
-            Text("Mood journey this week")
+            Text("Perjalanan suasana hati minggu ini")
                 .font(AppFont.Poppins.bold(16))
-            Text("Discover how your emotions evolved over the last 7 days.")
+            Text("Temukan bagaimana emosi Anda berkembang selama 7 hari terakhir.")
                 .font(AppFont.Poppins.regular(13))
                 .foregroundColor(.gray)
             Spacer()
@@ -23,13 +22,12 @@ struct MoodJourneyCard: View {
                 Spacer()
                 HeartProgress(
                     progress: progress,
-                    parallaxOffset: parallaxOffset,
                     color: Color("PastelBlue")
                 )
                 Spacer()
             }
             Spacer()
-            Text("You're feeling good this week")
+            Text("Anda merasa baik minggu ini")
                 .font(AppFont.Poppins.regular(13))
                 .foregroundColor(.gray)
                 .frame(maxWidth: .infinity, alignment: .center)

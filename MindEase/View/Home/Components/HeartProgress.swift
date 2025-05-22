@@ -8,41 +8,43 @@
 import SwiftUI
 
 struct HeartProgress: View {
-    var progress: CGFloat // 0.0 ... 1.0
-    var parallaxOffset: CGFloat // untuk efek parallax
+    var progress: CGFloat
     var color: Color
+    @State private var phase1: CGFloat = 0
+    @State private var phase2: CGFloat = 0
+    @State private var phase3: CGFloat = 0
+
+    let timer = Timer.publish(every: 0.02, on: .main, in: .common).autoconnect()
 
     var body: some View {
         ZStack {
-            // Heart shape outline
             HeartShape()
                 .stroke(Color.gray.opacity(0.2), lineWidth: 2)
-                .frame(width: 140, height: 140)
-            
-            HeartShape()
-                .fill(
-                    LinearGradient(
-                        gradient: Gradient(colors: [color.opacity(0.8), color.opacity(0.5)]),
-                        startPoint: .top,
-                        endPoint: .bottom
-                    )
-                )
-                .frame(width: 140, height: 140)
-                .mask(
-                    VStack {
-                        Spacer(minLength: 0)
-                        Rectangle()
-                            .frame(height: 140 * progress + parallaxOffset)
-                            .foregroundColor(.white)
-                    }
-                )
-                .animation(.easeInOut, value: progress)
-            
+                .frame(width: 160, height: 160)
+
+            ZStack {
+                Wave(progress: progress, waveHeight: 10, phase: phase1)
+                    .fill(color.opacity(0.4))
+                Wave(progress: progress, waveHeight: 8, phase: phase2)
+                    .fill(color.opacity(0.6))
+                Wave(progress: progress, waveHeight: 6, phase: phase3)
+                    .fill(color.opacity(0.8))
+            }
+            .frame(width: 160, height: 160)
+            .mask(HeartShape().frame(width: 160, height: 160))
+
             Text("\(Int(progress * 100))%")
                 .font(.system(size: 32, weight: .bold))
                 .foregroundColor(.white)
                 .shadow(radius: 2)
         }
         .frame(width: 140, height: 140)
+        .onReceive(timer) { _ in
+            withAnimation(.linear(duration: 0.02)) {
+                phase1 += 0.06
+                phase2 += 0.04
+                phase3 += 0.02
+            }
+        }
     }
 }
