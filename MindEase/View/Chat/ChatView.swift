@@ -15,6 +15,7 @@ struct ChatMessage: Identifiable {
 }
 
 struct ChatView: View {
+    @Environment(\.dismiss) var dismiss
     @State private var messages: [ChatMessage] = [
         .init(text: "Hello, Summer 👋✨", isUser: false, isSuggestion: false),
         .init(text: "How are you feeling today?", isUser: false, isSuggestion: false),
@@ -26,8 +27,7 @@ struct ChatView: View {
     
     var body: some View {
         ZStack {
-            Color("PastelBlue").opacity(0.2)
-                .ignoresSafeArea()
+            Color("PastelBlue").opacity(0.2).ignoresSafeArea()
             
             VStack(spacing: 0) {
                 ScrollViewReader { proxy in
@@ -60,16 +60,8 @@ struct ChatView: View {
                             }
                             
                             HStack(spacing: 16) {
-                                SuggestionCard(
-                                    icon: "brain.head.profile",
-                                    color: Color("PastelYellow"),
-                                    title: "Breathing Exercise"
-                                )
-                                SuggestionCard(
-                                    icon: "tv",
-                                    color: Color("PastelBlue"),
-                                    title: "Body Scan Meditation"
-                                )
+                                SuggestionCard(icon: "brain.head.profile", color: Color("PastelYellow"), title: "Breathing Exercise")
+                                SuggestionCard(icon: "tv", color: Color("PastelBlue"), title: "Body Scan Meditation")
                             }
                             .padding(.top, 8)
                             .padding(.horizontal)
@@ -78,7 +70,6 @@ struct ChatView: View {
                     }
                 }
                 
-                // Input bar
                 HStack(spacing: 12) {
                     TextField("Ask me anything", text: $inputText)
                         .padding(12)
@@ -87,7 +78,7 @@ struct ChatView: View {
                         .font(.system(size: 16))
                     
                     Button {
-                        // Action send
+                        // mic action
                     } label: {
                         Image(systemName: "mic.fill")
                             .foregroundColor(Color("PastelBlue"))
@@ -95,7 +86,7 @@ struct ChatView: View {
                     }
                     
                     Button {
-                        // Action send
+                        // send action
                     } label: {
                         Image(systemName: "paperplane.fill")
                             .foregroundColor(.white)
@@ -109,8 +100,35 @@ struct ChatView: View {
                 .background(Color(.systemGroupedBackground).opacity(0.9))
             }
         }
+        .navigationTitle("AI Therapist")
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItem(placement: .navigationBarLeading) {
+                Button(action: {
+                    dismiss()
+                }) {
+                    Image(systemName: "chevron.left")
+                        .foregroundColor(.blue)
+                }
+            }
+            ToolbarItem(placement: .navigationBarTrailing) {
+                NavigationLink(destination: ChatHistoryView()) {
+                    Image(systemName: "clock.arrow.circlepath")
+                        .foregroundColor(.blue)
+                }
+            }
+        }
     }
 }
+
+struct ChatHistoryView: View {
+    var body: some View {
+        Text("Riwayat Chat Kamu")
+            .font(.title2)
+            .padding()
+    }
+}
+
 
 struct SuggestionCard: View {
     let icon: String

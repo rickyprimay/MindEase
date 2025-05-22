@@ -17,6 +17,7 @@ struct MoodJourneyCard: View {
             Text("Temukan bagaimana emosi Anda berkembang selama 7 hari terakhir.")
                 .font(AppFont.Poppins.regular(13))
                 .foregroundColor(.gray)
+                .lineLimit(2)
             Spacer()
             HStack {
                 Spacer()

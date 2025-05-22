@@ -42,23 +42,24 @@ struct AIView: View {
                     .foregroundColor(.primary)
                     .fixedSize(horizontal: false, vertical: true)
                     
-                    Button(action: {
-                        
-                    }) {
+                    NavigationLink(destination: ChatView()) {
                         Text("Mulai Curhat Sekarang")
                             .font(AppFont.Poppins.bold(14))
                             .foregroundColor(.white)
                             .frame(maxWidth: .infinity)
                             .padding()
-                            .background(LinearGradient(
-                                gradient: Gradient(colors: [Color.purple.opacity(0.6), Color("PastelBlue")]),
-                                startPoint: .topLeading,
-                                endPoint: .bottomTrailing
-                            ))
+                            .background(
+                                LinearGradient(
+                                    gradient: Gradient(colors: [Color.purple.opacity(0.6), Color("PastelBlue")]),
+                                    startPoint: .topLeading,
+                                    endPoint: .bottomTrailing
+                                )
+                            )
                             .cornerRadius(12)
                     }
                     .padding(.top, 8)
-                    .padding(.bottom, 60)
+                    .padding(.bottom, 80)
+                    
                     
                     Spacer()
                 }
