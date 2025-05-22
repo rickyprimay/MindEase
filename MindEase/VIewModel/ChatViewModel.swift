@@ -39,14 +39,13 @@ class ChatViewModel: ObservableObject {
                 let response = try await model.generateContent(systemMessage + prompt)
                 if let text = response.text {
                     await MainActor.run {
-                        Task {
-                            await self.startTextAnimation(textUsing: text)
-                            if usingTTS {
-                                self.speak(text: text)
-                            }
-                            completion()
+                        if usingTTS {
+                            self.speak(text: text)
                         }
                     }
+
+                    await self.startTextAnimation(textUsing: text)
+                    completion()
                 } else {
                     completion()
                 }
