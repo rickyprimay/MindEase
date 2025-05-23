@@ -19,7 +19,7 @@ struct NewsView: View {
             
             VStack(alignment: .leading, spacing: 16) {
                 Text("Berita Kesehatan Mental")
-                    .font(AppFont.Poppins.bold(24))
+                    .font(AppFont.Poppins.regular(24))
                     .padding(.horizontal)
                 
                 if newsViewModel.isLoading {
