@@ -20,7 +20,7 @@ class NewsViewModel: ObservableObject {
     @Published var isLoading: Bool = false
     
     func getNews() {
-        isLoading = true
+        self.isLoading = true
         AF.request(baseUrl).responseDecodable(of: NewsResponse.self) { response in
             self.isLoading = false
             switch response.result {
