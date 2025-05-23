@@ -110,30 +110,43 @@ struct ChatView: View {
                         .cornerRadius(20)
                         .font(.system(size: 16))
                     
-                    Button {
-                        UIApplication.shared.endEditing()
-                        chatViewModel.stopSpeaking()
-                        
-                        let userMessage = ChatMessage(text: promptText, isUser: true, isSuggestion: false)
-                        messages.append(userMessage)
-                        
-                        let currentPrompt = promptText
-                        promptText = ""
-                        
-                        chatViewModel.sendPromptToGemini(prompt: currentPrompt, usingTTS: usingTTS) {
-                            DispatchQueue.main.async {
-                                let animatedResult = ChatMessage(text: chatViewModel.animatedText, isUser: false, isSuggestion: false)
-                                messages.append(animatedResult)
-                                chatViewModel.animatedText = ""
-                            }
+                    if chatViewModel.isSpeaking {
+                        Button {
+                            chatViewModel.stopAll()
+                        } label: {
+                            Image(systemName: "stop.fill")
+                                .foregroundColor(.white)
+                                .padding(10)
+                                .background(Color.black)
+                                .clipShape(Circle())
                         }
-                    } label: {
-                        Image(systemName: "paperplane")
-                            .foregroundColor(.white)
-                            .padding(10)
-                            .background(.black)
-                            .clipShape(Circle())
+                    } else {
+                        Button {
+                            UIApplication.shared.endEditing()
+                            chatViewModel.stopSpeaking()
+
+                            let userMessage = ChatMessage(text: promptText, isUser: true, isSuggestion: false)
+                            messages.append(userMessage)
+
+                            let currentPrompt = promptText
+                            promptText = ""
+
+                            chatViewModel.sendPromptToGemini(prompt: currentPrompt, usingTTS: usingTTS) {
+                                DispatchQueue.main.async {
+                                    let animatedResult = ChatMessage(text: chatViewModel.animatedText, isUser: false, isSuggestion: false)
+                                    messages.append(animatedResult)
+                                    chatViewModel.animatedText = ""
+                                }
+                            }
+                        } label: {
+                            Image(systemName: "paperplane")
+                                .foregroundColor(.white)
+                                .padding(10)
+                                .background(Color.black)
+                                .clipShape(Circle())
+                        }
                     }
+
                     
                 }
                 .padding(.horizontal)
@@ -175,13 +188,5 @@ struct ChatView: View {
                 }
             }
         }
-    }
-}
-
-struct ChatHistoryView: View {
-    var body: some View {
-        Text("Riwayat Chat Kamu")
-            .font(.title2)
-            .padding()
     }
 }

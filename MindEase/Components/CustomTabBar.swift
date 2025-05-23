@@ -16,7 +16,7 @@ struct CustomTabBar: View {
                 selectedIndex = 0
             }
             Spacer()
-            CustomTabBarItem(icon: "book.pages.fill", title: "Artikel", isSelected: selectedIndex == 1, isCenter: false) {
+            CustomTabBarItem(icon: "book.pages.fill", title: "Berita", isSelected: selectedIndex == 1, isCenter: false) {
                 selectedIndex = 1
             }
             Spacer()
@@ -43,3 +43,4 @@ struct CustomTabBar: View {
         .padding(.horizontal, 8)
     }
 }
+

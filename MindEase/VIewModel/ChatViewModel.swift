@@ -18,42 +18,81 @@ class ChatViewModel: ObservableObject {
     @Published var isAnimatingText = false
     private let synthesizer = AVSpeechSynthesizer()
     
-    let model = GenerativeModel(name: "gemini-1.5-flash-latest", apiKey: "AIzaSyCMZoLNkDoL6Gc-1Ae1gt8sIeBoqYkZBqM")
+    @Published var isSpeaking: Bool = false
+    private var animationTask: Task<Void, Never>? = nil
+
+    @Published var chatHistory: [String] = []
+    
+    let model = GenerativeModel(
+        name: "gemini-1.5-flash-latest",
+        apiKey: "AIzaSyCMZoLNkDoL6Gc-1Ae1gt8sIeBoqYkZBqM"
+    )
+    
+    private let systemMessage = """
+Kamu adalah AI teman curhat di MindEase. Jawab dengan gaya santai, hangat, dan penuh empati, seperti sahabat yang peduli. Gunakan bahasa gaul anak muda, boleh pakai emoji, dan jangan lebih dari 20 kata. Fokus pada mendengarkan, memberi semangat, dan tips ringan self-care. Jangan terlalu formal atau seperti robot. Jawaban harus singkat, tulus, dan terasa dekat.
+"""
+
+    private func buildPrompt(userPrompt: String) -> String {
+        let historyString = chatHistory.joined(separator: "\n")
+        return """
+        \(systemMessage)
+        Riwayat obrolan:
+        \(historyString)
+        User: \(userPrompt)
+        """
+    }
+
+    func addToHistory(_ message: String) {
+        chatHistory.append(message)
+        if chatHistory.count > 6 {
+            chatHistory.removeFirst(chatHistory.count - 6)
+        }
+    }
     
     func sendPromptToGemini(prompt: String, usingTTS: Bool, completion: @escaping () -> Void) {
+        isSpeaking = true
         Task {
             do {
-                let systemMessage = """
-                Kamu adalah AI terapis di aplikasi MindEase. Peranmu adalah menjadi teman ngobrol yang suportif dan penuh empati untuk pengguna yang sedang mengalami stres, kecemasan, kesepian, atau perasaan sulit lainnya.
-                
-                Gunakan gaya bahasa santai, ramah, dan terasa seperti teman yang mengerti, bukan seperti layanan darurat atau robot resmi. Hindari jawaban terlalu formal atau seperti template layanan kesehatan. Fokus pada mendengarkan, memahami, dan memberi dorongan emosional serta tips ringan tentang self-care dan mindfulness.
-                
-                **Penting:** Jangan menyebutkan "Aku bukan profesional medis", "Hubungi layanan darurat", atau "Aku tidak bisa membantu". Sebaliknya, berikan dukungan hangat, dan jika benar-benar diperlukan, sarankan dengan lembut untuk mencari bantuan profesional secara alami, misalnya:
-                "Kalau kamu merasa ini udah terlalu berat buat ditanggung sendiri, mungkin ngobrol sama psikolog bisa bantu, loh."
-                
-                Jangan copy-paste jawaban panjang atau berbasa-basi. Buat jawabanmu pendek, jelas, dan terasa tulus. Bicara seperti teman yang peduli dan ingin benar-benar membantu.
-                
-                Jawab dalam Bahasa Indonesia yang ringan dan mudah dimengerti anak muda.
-                """
-                
-                let response = try await model.generateContent(systemMessage + prompt)
+                let promptToSend = buildPrompt(userPrompt: prompt)
+                let response = try await model.generateContent(promptToSend)
                 if let text = response.text {
                     await MainActor.run {
-                        if usingTTS {
+                        self.addToHistory("User: \(prompt)")
+                        self.addToHistory("AI: \(text)")
+                    }
+                    if usingTTS {
+                        await MainActor.run {
                             self.speak(text: text)
                         }
                     }
-                    
-                    await self.startTextAnimation(textUsing: text)
-                    completion()
+                    animationTask = Task {
+                        await self.startTextAnimation(textUsing: text)
+                        await MainActor.run {
+                            self.isSpeaking = false
+                            completion()
+                        }
+                    }
                 } else {
-                    completion()
+                    await MainActor.run {
+                        self.isSpeaking = false
+                        completion()
+                    }
                 }
             } catch {
                 print("Error: \(error.localizedDescription)")
-                completion()
+                await MainActor.run {
+                    self.isSpeaking = false
+                    completion()
+                }
             }
         }
+    }
+    
+    func stopAll() {
+        stopSpeaking()
+        animationTask?.cancel()
+        isAnimatingText = false
+        isSpeaking = false
     }
     
     @MainActor
@@ -83,5 +122,4 @@ class ChatViewModel: ObservableObject {
             synthesizer.stopSpeaking(at: .immediate)
         }
     }
-    
 }

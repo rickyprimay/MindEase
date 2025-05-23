@@ -15,7 +15,7 @@ struct DiscoverView: View {
             Group {
                 switch selectedIndex {
                 case 0: HomeView()
-                case 1: Text("Explore")
+                case 1: NewsView()
                 case 2: AIView()
                 case 3: Text("Stats")
                 case 4: Text("Setting")
