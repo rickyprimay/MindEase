@@ -25,13 +25,10 @@ class NewsViewModel: ObservableObject {
             self.isLoading = false
             switch response.result {
             case .success(let data):
-                print("✅ Decoded response:")
-                print(data.articles)
                 DispatchQueue.main.async {
                     self.news = data.articles
                 }
             case .failure(let error):
-                print("❌ Error decoding:")
                 print("Error fetching news: \(error.localizedDescription)")
             }
         }

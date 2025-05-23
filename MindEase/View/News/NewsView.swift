@@ -38,7 +38,10 @@ struct NewsView: View {
                         .padding(.vertical)
                     }
                 }
+                
+                Spacer()
             }
+            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
         }
         .onAppear {
             newsViewModel.getNews()
@@ -55,7 +58,7 @@ struct NewsCardView: View {
                 WebImage(url: url)
                     .resizable()
                     .scaledToFill()
-                    .frame(width: UIScreen.main.bounds.width - 32, height: 200)
+                    .frame(width: UIScreen.main.bounds.width - 50, height: 200)
                     .clipped()
                     .cornerRadius(10)
             } else {
@@ -84,8 +87,11 @@ struct NewsCardView: View {
             Text("Sumber: \(news.source.name)")
                 .font(AppFont.Poppins.regular(12))
                 .foregroundColor(.gray)
-            
-            Divider()
         }
+        .padding()
+        .background(Color.white.opacity(0.4))
+        .cornerRadius(15)
+        .shadow(color: Color.black.opacity(0.1), radius: 5, x: 0, y: 2)
+        .frame(width: UIScreen.main.bounds.width - 32, height: 350)
     }
 }
