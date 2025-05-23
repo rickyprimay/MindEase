@@ -33,7 +33,7 @@ struct CustomTabBar: View {
             }
         }
         .padding(.horizontal, 24)
-        .padding(.bottom, 12)
+        .padding(.bottom, 20)
         .padding(.top, 8)
         .background(
             Color.white

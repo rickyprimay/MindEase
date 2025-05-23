@@ -112,6 +112,7 @@ struct ChatView: View {
                     
                     Button {
                         UIApplication.shared.endEditing()
+                        chatViewModel.stopSpeaking()
                         
                         let userMessage = ChatMessage(text: promptText, isUser: true, isSuggestion: false)
                         messages.append(userMessage)
@@ -150,6 +151,7 @@ struct ChatView: View {
             ToolbarItem(placement: .navigationBarLeading) {
                 Button(action: {
                     dismiss()
+                    chatViewModel.stopSpeaking()
                 }) {
                     Image(systemName: "chevron.left")
                         .font(AppFont.Poppins.extraLight(13))
@@ -181,32 +183,5 @@ struct ChatHistoryView: View {
         Text("Riwayat Chat Kamu")
             .font(.title2)
             .padding()
-    }
-}
-
-struct SuggestionCard: View {
-    let icon: String
-    let color: Color
-    let title: String
-    let onTap: () -> Void
-    
-    var body: some View {
-        Button(action: {
-            onTap()
-        }) {
-            VStack(spacing: 8) {
-                Image(systemName: icon)
-                    .font(AppFont.Poppins.bold(32))
-                    .foregroundColor(color)
-                Text(title)
-                    .font(AppFont.Poppins.regular(14))
-                    .foregroundColor(.black)
-                    .multilineTextAlignment(.center)
-            }
-            .frame(width: 150, height: 80)
-            .background(Color.white)
-            .cornerRadius(16)
-            .shadow(color: Color.black.opacity(0.04), radius: 4, x: 0, y: 2)
-        }
     }
 }

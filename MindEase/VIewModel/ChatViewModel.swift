@@ -43,7 +43,7 @@ class ChatViewModel: ObservableObject {
                             self.speak(text: text)
                         }
                     }
-
+                    
                     await self.startTextAnimation(textUsing: text)
                     completion()
                 } else {
@@ -76,6 +76,12 @@ class ChatViewModel: ObservableObject {
         utterance.rate = AVSpeechUtteranceDefaultSpeechRate * 0.95
         utterance.pitchMultiplier = 1.1
         synthesizer.speak(utterance)
+    }
+    
+    func stopSpeaking() {
+        if synthesizer.isSpeaking {
+            synthesizer.stopSpeaking(at: .immediate)
+        }
     }
     
 }
