@@ -9,6 +9,7 @@ import SwiftUI
 
 struct DiscoverView: View {
     @State private var selectedIndex = 0
+    @StateObject var authViewModel = AuthViewModel()
 
     var body: some View {
         ZStack(alignment: .bottom) {
@@ -18,7 +19,7 @@ struct DiscoverView: View {
                 case 1: NewsView()
                 case 2: AIView()
                 case 3: Text("Stats")
-                case 4: Text("Setting")
+                case 4: SettingsView().environmentObject(authViewModel)
                 default: HomeView()
                 }
             }

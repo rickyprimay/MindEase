@@ -51,6 +51,16 @@ class AuthViewModel: ObservableObject {
             }
         }
     }
+    
+    func logout() {
+        do {
+            try Auth.auth().signOut()
+            GIDSignIn.sharedInstance.signOut()
+            UserDefaults.standard.set(false, forKey: "signIn")
+        } catch {
+            print("Error during sign out: \(error.localizedDescription)")
+        }
+    }
 
     private func getPresentingViewController() -> UIViewController? {
         guard let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
