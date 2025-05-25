@@ -6,26 +6,25 @@
 //
 
 import SwiftUI
-import SDWebImageSwiftUI
 
 struct NewsView: View {
     
     @StateObject var newsViewModel = NewsViewModel()
     
     var body: some View {
-        ZStack {
-            Color("PastelBlue").opacity(0.2)
-                .ignoresSafeArea()
-            
-            VStack(alignment: .leading, spacing: 16) {
-                Text("Berita Kesehatan Mental")
-                    .font(AppFont.Poppins.regular(24))
-                    .padding(.horizontal)
+        NavigationStack {
+            ZStack {
+                Color("PastelBlue").opacity(0.2)
+                    .ignoresSafeArea()
                 
                 if newsViewModel.isLoading {
-                    ProgressView("Memuat berita...")
-                        .padding()
-                        .frame(maxWidth: .infinity, alignment: .center)
+                    VStack {
+                        Spacer()
+                        ProgressView("Memuat berita...")
+                            .progressViewStyle(CircularProgressViewStyle(tint: .blue))
+                            .font(.headline)
+                        Spacer()
+                    }
                 } else {
                     ScrollView {
                         LazyVStack(spacing: 20) {
@@ -35,16 +34,14 @@ struct NewsView: View {
                                     .padding(.horizontal)
                             }
                         }
-                        .padding(.vertical)
+                        .padding(.top)
                     }
                 }
-                
-                Spacer()
             }
-            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
-        }
-        .onAppear {
-            newsViewModel.getNews()
+            .navigationTitle("Berita")
+            .onAppear {
+                newsViewModel.getNews()
+            }
         }
     }
 }

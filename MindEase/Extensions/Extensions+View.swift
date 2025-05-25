@@ -19,4 +19,17 @@ extension View {
         
         return root
     }
+    
+    func setNavigationBarTitleFont(size: CGFloat = 14, weight: UIFont.Weight = .regular) -> some View {
+        let appearance = UINavigationBarAppearance()
+        appearance.configureWithOpaqueBackground()
+        appearance.titleTextAttributes = [
+            .font: UIFont.systemFont(ofSize: size, weight: weight)
+        ]
+        
+        UINavigationBar.appearance().standardAppearance = appearance
+        UINavigationBar.appearance().scrollEdgeAppearance = appearance
+        
+        return self
+    }
 }
