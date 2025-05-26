@@ -16,6 +16,7 @@ class MoodViewModel: ObservableObject {
     @Published var showNotePopup: Bool = false
     @Published var moodSaved: Bool = false
     @Published var todayMood: String? = nil
+    @Published var weeklyMoodData: [String: String] = [:]
     
     private let db = Firestore.firestore()
     
@@ -76,4 +77,64 @@ class MoodViewModel: ObservableObject {
                 }
             }
     }
+    
+    func fetchWeeklyMoods(completion: @escaping (Bool) -> Void) {
+        guard let userId = Auth.auth().currentUser?.uid else {
+            completion(false)
+            return
+        }
+
+        let calendar = Calendar.current
+        let today = Date()
+        let db = Firestore.firestore()
+        
+        let group = DispatchGroup()
+        var tempData: [String: String] = [:]
+
+        for i in 0..<7 {
+            if let date = calendar.date(byAdding: .day, value: -i, to: today) {
+                let dateString = date.formattedDateString()
+                group.enter()
+                
+                db.collection("moods")
+                    .document(userId)
+                    .collection("entries")
+                    .document(dateString)
+                    .getDocument { document, error in
+                        if let document = document, document.exists,
+                           let data = document.data(),
+                           let mood = data["mood"] as? String {
+                            tempData[dateString] = mood
+                        }
+                        group.leave()
+                    }
+            }
+        }
+
+        group.notify(queue: .main) {
+            self.weeklyMoodData = tempData
+            completion(true)
+        }
+    }
+
+    func calculateMoodScoreNormalized() -> Double {
+        let moodScores: [String: Int] = [
+            "Gembira": 4,
+            "Senang": 4,
+            "Bosan": 2,
+            "Sedih": 1,
+            "Marah": 1
+        ]
+        
+        let moods = weeklyMoodData.values
+        guard !moods.isEmpty else { return 0.25 }
+        
+        let totalScore = moods.reduce(0) { $0 + (moodScores[$1] ?? 0) }
+        let maxScore = moods.count * 4
+        
+        let normalized = Double(totalScore) / Double(maxScore)
+        
+        return max(normalized, 0.25)
+    }
+    
 }

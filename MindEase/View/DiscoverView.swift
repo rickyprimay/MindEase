@@ -16,12 +16,12 @@ struct DiscoverView: View {
         ZStack(alignment: .bottom) {
             Group {
                 switch selectedIndex {
-                case 0: HomeView().environmentObject(moodViewModel)
-                case 1: NewsView()
-                case 2: AIView()
-                case 3: Text("Stats")
-                case 4: SettingsView().environmentObject(authViewModel)
-                default: HomeView()
+                    case 0: HomeView().environmentObject(moodViewModel)
+                    case 1: NewsView()
+                    case 2: AIView()
+                    case 3: StatsView().environmentObject(moodViewModel)
+                    case 4: SettingsView().environmentObject(authViewModel)
+                    default: HomeView()
                 }
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)

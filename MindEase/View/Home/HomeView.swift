@@ -113,7 +113,7 @@ struct HomeView: View {
                         .transition(.opacity.combined(with: .move(edge: .top)))
                     }
                     
-                    MoodJourneyCard(progress: 0.82)
+                    MoodJourneyCard(progress: moodViewModel.calculateMoodScoreNormalized())
                         .padding(.top, 24)
                         .frame(height: 220)
                     
@@ -125,6 +125,12 @@ struct HomeView: View {
                     if moodViewModel.todayMood == nil {
                         moodViewModel.checkMoodForToday { success in
                             print("Mood loaded:", moodViewModel.todayMood ?? "None")
+                        }
+                    }
+                    moodViewModel.fetchWeeklyMoods { success in
+                        if success {
+                            let progress = moodViewModel.calculateMoodScoreNormalized()
+                            print("Weekly mood score normalized: \(progress)")
                         }
                     }
                 }
