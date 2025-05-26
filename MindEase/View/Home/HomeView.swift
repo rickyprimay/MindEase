@@ -136,17 +136,10 @@ struct HomeView: View {
                         hasAppeared = true
 
                         if moodViewModel.todayMood == nil {
-                            moodViewModel.checkMoodForToday { success in
-                                print("Mood loaded:", moodViewModel.todayMood ?? "None")
-                            }
+                            moodViewModel.checkMoodForToday { _ in }
                         }
 
-                        moodViewModel.fetchWeeklyMoods { success in
-                            if success {
-                                let progress = moodViewModel.calculateMoodScoreNormalized()
-                                print("Weekly mood score normalized: \(progress)")
-                            }
-                        }
+                        moodViewModel.fetchWeeklyMoods { _ in }
                     }
                 }
             }
