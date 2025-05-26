@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+#if canImport(UIKit)
 extension View {
     func getRootViewController() -> UIViewController {
         guard let screen = UIApplication.shared.connectedScenes.first as? UIWindowScene else {
@@ -32,4 +33,10 @@ extension View {
         
         return self
     }
+    
+    func hideKeyboard() {
+        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+    }
+    
 }
+#endif

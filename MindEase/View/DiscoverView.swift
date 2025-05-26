@@ -10,12 +10,13 @@ import SwiftUI
 struct DiscoverView: View {
     @State private var selectedIndex = 0
     @StateObject var authViewModel = AuthViewModel()
+    @StateObject var moodViewModel = MoodViewModel()
 
     var body: some View {
         ZStack(alignment: .bottom) {
             Group {
                 switch selectedIndex {
-                case 0: HomeView()
+                case 0: HomeView().environmentObject(moodViewModel)
                 case 1: NewsView()
                 case 2: AIView()
                 case 3: Text("Stats")

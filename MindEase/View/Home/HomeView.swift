@@ -13,12 +13,13 @@ struct HomeView: View {
     @State private var profileImageURL: URL?
     @State private var displayName: String = ""
     @State private var scrollOffset: CGFloat = 0
+    @EnvironmentObject var moodViewModel: MoodViewModel
     
     var body: some View {
         ZStack {
             Color("PastelBlue").opacity(0.2)
                 .ignoresSafeArea()
-
+            
             ScrollView {
                 VStack {
                     HStack {
@@ -37,42 +38,119 @@ struct HomeView: View {
                         Spacer()
                     }
                     .padding(.top, 2)
-
-                    VStack(alignment: .leading, spacing: 16) {
-                        Text("Bagaimana perasaanmu hari ini?")
-                            .font(AppFont.Poppins.bold(18))
-                            .padding(.bottom)
-                        
-                        HStack(spacing: 22) {
-                            MoodButton(image: "Good", label: "Senang")
-                            MoodButton(image: "Joyful", label: "Gembira")
-                            MoodButton(image: "Sad", label: "Sedih")
-                            MoodButton(image: "Bored", label: "Bosan")
-                            MoodButton(image: "Angry", label: "Marah")
+                    
+                    if let todayMood = moodViewModel.todayMood {
+                        VStack(spacing: 16) {
+                            HStack {
+                                Image(MoodImage.imageName(for: todayMood))
+                                    .resizable()
+                                    .frame(width: 50, height: 50)
+                                
+                                Text("Kamu hari ini merasa \(todayMood)")
+                                    .font(AppFont.Poppins.bold(16))
+                                
+                                Spacer()
+                            }
+                            .padding()
+                            .background(Color.white)
+                            .cornerRadius(16)
+                            .shadow(radius: 4)
+                            .transition(.move(edge: .bottom).combined(with: .opacity))
                         }
-
+                        .padding(.vertical, 24)
+                        .padding(.horizontal, 16)
+                        .background(
+                            Color.white
+                                .cornerRadius(24)
+                                .shadow(color: Color.black.opacity(0.07), radius: 8, x: 4, y: 4)
+                        )
+                        .padding(.vertical, 12)
+                        .padding(.bottom, 20)
+                    } else {
+                        VStack(alignment: .leading, spacing: 16) {
+                            Text("Bagaimana perasaanmu hari ini?")
+                                .font(AppFont.Poppins.bold(18))
+                                .padding(.bottom)
+                            
+                            HStack(spacing: 22) {
+                                MoodButton(image: "Good", label: "Senang") {
+                                    moodViewModel.selectedMood = "Senang"
+                                    moodViewModel.note = ""
+                                    moodViewModel.showNotePopup = true
+                                }
+                                MoodButton(image: "Joyful", label: "Gembira") {
+                                    moodViewModel.selectedMood = "Gembira"
+                                    moodViewModel.note = ""
+                                    moodViewModel.showNotePopup = true
+                                }
+                                MoodButton(image: "Sad", label: "Sedih") {
+                                    moodViewModel.selectedMood = "Sedih"
+                                    moodViewModel.note = ""
+                                    moodViewModel.showNotePopup = true
+                                }
+                                MoodButton(image: "Bored", label: "Bosan") {
+                                    moodViewModel.selectedMood = "Bosan"
+                                    moodViewModel.note = ""
+                                    moodViewModel.showNotePopup = true
+                                }
+                                MoodButton(image: "Angry", label: "Marah") {
+                                    moodViewModel.selectedMood = "Marah"
+                                    moodViewModel.note = ""
+                                    moodViewModel.showNotePopup = true
+                                }
+                            }
+                        }
+                        .padding(.vertical, 24)
+                        .padding(.horizontal, 16)
+                        .background(
+                            Color.white
+                                .cornerRadius(24)
+                                .shadow(color: Color.black.opacity(0.07), radius: 8, x: 4, y: 4)
+                        )
+                        .padding(.vertical, 12)
+                        .padding(.bottom, 20)
+                        .transition(.opacity.combined(with: .move(edge: .top)))
                     }
-                    .padding(.vertical, 24)
-                    .padding(.horizontal, 16)
-                    .background(
-                        Color.white
-                            .cornerRadius(24)
-                            .shadow(color: Color.black.opacity(0.07), radius: 8, x: 4, y: 4)
-                    )
-                    .padding(.vertical, 12)
-                    .padding(.bottom, 20)
                     
                     MoodJourneyCard(progress: 0.82)
                         .padding(.top, 24)
                         .frame(height: 220)
-                        
+                    
                     Spacer(minLength: 32)
                 }
                 .padding(.horizontal)
                 .padding(.top)
                 .onAppear {
-                    loadUserData()
+                    if moodViewModel.todayMood == nil {
+                        loadUserData()
+                        moodViewModel.checkMoodForToday { success in
+                            print("Mood loaded:", moodViewModel.todayMood ?? "None")
+                        }
+                    }
                 }
+            }
+            if moodViewModel.showNotePopup {
+                Color.black.opacity(0.4)
+                    .ignoresSafeArea()
+                    .transition(.opacity)
+                    .animation(.easeInOut(duration: 0.2), value: moodViewModel.showNotePopup)
+                
+                MoodNotePopup(
+                    note: $moodViewModel.note,
+                    mood: moodViewModel.selectedMood,
+                    onSave: {
+                        moodViewModel.saveMood()
+                        moodViewModel.showNotePopup = false
+                        withAnimation {
+                            moodViewModel.moodSaved = true
+                        }
+                    },
+                    onCancel: {
+                        moodViewModel.showNotePopup = false
+                    }
+                )
+                .transition(.scale)
+                .animation(.spring(), value: moodViewModel.showNotePopup)
             }
         }
     }

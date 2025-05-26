@@ -24,4 +24,10 @@ extension Date {
             return "Selamat Tidur"
         }
     }
+    
+    func formattedDateString() -> String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd"
+        return formatter.string(from: self)
+    }
 }
