@@ -10,8 +10,9 @@ import SDWebImageSwiftUI
 import FirebaseAuth
 
 struct HomeView: View {
-    @State private var profileImageURL: URL?
-    @State private var displayName: String = ""
+    
+    let name = UserDefaults.standard.string(forKey: "userName") ?? ""
+    let profileImageURL = UserDefaults.standard.string(forKey: "userProfileImage") ?? ""
     @State private var scrollOffset: CGFloat = 0
     @EnvironmentObject var moodViewModel: MoodViewModel
     
@@ -23,7 +24,7 @@ struct HomeView: View {
             ScrollView {
                 VStack {
                     HStack {
-                        WebImage(url: profileImageURL)
+                        WebImage(url: URL(string: profileImageURL))
                             .resizable()
                             .clipShape(Circle())
                             .frame(width: 50, height: 50)
@@ -31,7 +32,7 @@ struct HomeView: View {
                         VStack(alignment: .leading) {
                             Text(Date().greetingForCurrentHour())
                                 .font(AppFont.Poppins.extraLight(14))
-                            Text(displayName)
+                            Text(name)
                                 .font(AppFont.Poppins.regular(16))
                         }
                         
@@ -122,7 +123,6 @@ struct HomeView: View {
                 .padding(.top)
                 .onAppear {
                     if moodViewModel.todayMood == nil {
-                        loadUserData()
                         moodViewModel.checkMoodForToday { success in
                             print("Mood loaded:", moodViewModel.todayMood ?? "None")
                         }
@@ -152,13 +152,6 @@ struct HomeView: View {
                 .transition(.scale)
                 .animation(.spring(), value: moodViewModel.showNotePopup)
             }
-        }
-    }
-    
-    func loadUserData() {
-        if let user = Auth.auth().currentUser {
-            self.profileImageURL = user.photoURL
-            self.displayName = user.displayName ?? "Guest"
         }
     }
 }

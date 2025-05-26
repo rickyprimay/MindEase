@@ -41,12 +41,18 @@ class AuthViewModel: ObservableObject {
             let credential = GoogleAuthProvider.credential(withIDToken: idToken, accessToken: user.accessToken.tokenString)
 
             Auth.auth().signIn(with: credential) { result, error in
+                guard let user = result?.user else { return }
 //                if let error = error {
 //                    print("Firebase Sign-In error: \(error.localizedDescription)")
 //                    return
 //                }
 
                 UserDefaults.standard.set(true, forKey: "signIn")
+                UserDefaults.standard.set(user.email, forKey: "userEmail")
+                UserDefaults.standard.set(user.displayName, forKey: "userName")
+                if let photoURL = user.photoURL?.absoluteString {
+                    UserDefaults.standard.set(photoURL, forKey: "userProfileImage")
+                }
 //                print("Sign In Success")
             }
         }

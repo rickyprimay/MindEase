@@ -11,9 +11,9 @@ import FirebaseAuth
 
 struct SettingsView: View {
     @EnvironmentObject var authViewModel: AuthViewModel
-    @State private var profileImageURL: URL?
-    @State private var displayName: String = ""
-    @State private var email: String = ""
+    let name = UserDefaults.standard.string(forKey: "userName") ?? ""
+    let profileImageURL = UserDefaults.standard.string(forKey: "userProfileImage") ?? ""
+    let email = UserDefaults.standard.string(forKey: "userEmail") ?? ""
     @State private var showLogoutConfirmation = false
 
     var body: some View {
@@ -22,14 +22,14 @@ struct SettingsView: View {
                 .ignoresSafeArea()
 
             VStack(spacing: 24) {
-                WebImage(url: profileImageURL)
+                WebImage(url: URL(string: profileImageURL))
                     .resizable()
                     .clipShape(Circle())
                     .frame(width: 100, height: 100)
                     .padding(.top, 32)
 
                 VStack(spacing: 4) {
-                    Text(displayName)
+                    Text(name)
                         .font(AppFont.Poppins.bold(20))
                     HStack {
                         Image("google")
@@ -73,17 +73,6 @@ struct SettingsView: View {
                     secondaryButton: .cancel(Text("Batal"))
                 )
             }
-        }
-        .onAppear {
-            loadUserData()
-        }
-    }
-
-    func loadUserData() {
-        if let user = Auth.auth().currentUser {
-            self.profileImageURL = user.photoURL
-            self.displayName = user.displayName ?? "Guest"
-            self.email = user.email ?? "-"
         }
     }
 }
