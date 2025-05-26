@@ -16,10 +16,6 @@ struct AIView: View {
             ScrollView {
                 VStack(alignment: .leading, spacing: 16) {
                     
-                    Text("Kenalan dengan Fitur Chatbot Kami")
-                        .font(AppFont.Poppins.bold(20))
-                        .padding(.top)
-                    
                     Text("""
                     Kami memahami bahwa menjaga kesehatan mental adalah hal yang tidak selalu mudah. Dalam kehidupan yang penuh tekanan, rutinitas yang padat, dan ekspektasi yang terus meningkat, sering kali kita melupakan satu hal penting — merawat diri sendiri, termasuk kondisi emosional dan batin kita. Tidak semua orang memiliki ruang yang aman untuk berbagi cerita, keluhan, atau sekadar mengekspresikan perasaan. Dan untuk itulah kami hadir.
                     
@@ -67,5 +63,6 @@ struct AIView: View {
                 .padding(.top)
             }
         }
+        .navigationTitle("Fitur Chatbot")
     }
 }
