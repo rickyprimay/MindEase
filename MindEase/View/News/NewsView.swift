@@ -22,7 +22,7 @@ struct NewsView: View {
                         Spacer()
                         ProgressView("Memuat berita...")
                             .progressViewStyle(CircularProgressViewStyle(tint: .blue))
-                            .font(.headline)
+                            .font(AppFont.Poppins.bold(14))
                         Spacer()
                     }
                 } else {

@@ -18,6 +18,7 @@ class MoodViewModel: ObservableObject {
     @Published var todayMood: String? = nil
     @Published var weeklyMoodData: [String: String] = [:]
     @Published var allMoodData: [String: String] = [:]
+    @Published var isLoading: Bool = false
     
     private let db = Firestore.firestore()
     
@@ -56,25 +57,23 @@ class MoodViewModel: ObservableObject {
             return
         }
         
+        self.isLoading = true
         let todayDate = Date().formattedDateString()
-        let db = Firestore.firestore()
         
         db.collection("moods")
             .document(userId)
             .collection("entries")
             .document(todayDate)
             .getDocument { document, error in
-                if let document = document, document.exists, let data = document.data(),
-                   let mood = data["mood"] as? String {
-                    DispatchQueue.main.async {
+                DispatchQueue.main.async {
+                    if let document = document, document.exists, let data = document.data(),
+                       let mood = data["mood"] as? String {
                         self.todayMood = mood
-                        completion(true)
-                    }
-                } else {
-                    DispatchQueue.main.async {
+                    } else {
                         self.todayMood = nil
-                        completion(false)
                     }
+                    self.isLoading = false
+                    completion(true)
                 }
             }
     }
@@ -118,19 +117,18 @@ class MoodViewModel: ObservableObject {
             completion(false)
             return
         }
-        
+
+        self.isLoading = true
         let calendar = Calendar.current
         let today = Date()
-        let db = Firestore.firestore()
-        
+
         let group = DispatchGroup()
         var tempData: [String: String] = [:]
-        
+
         for i in 0..<7 {
             if let date = calendar.date(byAdding: .day, value: -i, to: today) {
                 let dateString = date.formattedDateString()
                 group.enter()
-                
                 db.collection("moods")
                     .document(userId)
                     .collection("entries")
@@ -145,9 +143,10 @@ class MoodViewModel: ObservableObject {
                     }
             }
         }
-        
+
         group.notify(queue: .main) {
             self.weeklyMoodData = tempData
+            self.isLoading = false
             completion(true)
         }
     }
