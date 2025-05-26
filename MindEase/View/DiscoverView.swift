@@ -11,20 +11,23 @@ struct DiscoverView: View {
     @State private var selectedIndex = 0
     @StateObject var authViewModel = AuthViewModel()
     @StateObject var moodViewModel = MoodViewModel()
+    @StateObject var newsViewModel = NewsViewModel()
+
+    var views: [AnyView] {
+        [
+            AnyView(HomeView().environmentObject(moodViewModel)),
+            AnyView(NewsView().environmentObject(newsViewModel)),
+            AnyView(AIView()),
+            AnyView(StatsView().environmentObject(moodViewModel)),
+            AnyView(SettingsView().environmentObject(authViewModel))
+        ]
+    }
 
     var body: some View {
         ZStack(alignment: .bottom) {
-            Group {
-                switch selectedIndex {
-                    case 0: HomeView().environmentObject(moodViewModel)
-                    case 1: NewsView()
-                    case 2: AIView()
-                    case 3: StatsView().environmentObject(moodViewModel)
-                    case 4: SettingsView().environmentObject(authViewModel)
-                    default: HomeView()
-                }
-            }
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            views[selectedIndex]
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+
             CustomTabBar(selectedIndex: $selectedIndex)
         }
         .ignoresSafeArea(.all, edges: .bottom)

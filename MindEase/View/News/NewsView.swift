@@ -9,7 +9,7 @@ import SwiftUI
 
 struct NewsView: View {
     
-    @StateObject var newsViewModel = NewsViewModel()
+    @EnvironmentObject var newsViewModel: NewsViewModel
     
     var body: some View {
         NavigationStack {
@@ -40,7 +40,9 @@ struct NewsView: View {
             }
             .navigationTitle("Berita")
             .onAppear {
-                newsViewModel.getNews()
+                if newsViewModel.news.isEmpty {
+                    newsViewModel.getNews()
+                }
             }
         }
     }
