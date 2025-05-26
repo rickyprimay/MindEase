@@ -78,6 +78,40 @@ class MoodViewModel: ObservableObject {
             }
     }
     
+    func fetchAllMoods(completion: @escaping (Bool) -> Void) {
+        guard let userId = Auth.auth().currentUser?.uid else {
+            completion(false)
+            return
+        }
+        
+        db.collection("moods")
+            .document(userId)
+            .collection("entries")
+            .order(by: "timestamp", descending: true)
+            .getDocuments { snapshot, error in
+                if let error = error {
+                    print("Error fetching all moods: \(error.localizedDescription)")
+                    completion(false)
+                    return
+                }
+                
+                var tempData: [String: String] = [:]
+                snapshot?.documents.forEach { doc in
+                    let data = doc.data()
+                    if let mood = data["mood"] as? String,
+                       let timestamp = data["timestamp"] as? Timestamp {
+                        let date = timestamp.dateValue()
+                        let dateString = date.formattedDateString()
+                        tempData[dateString] = mood
+                    }
+                }
+                DispatchQueue.main.async {
+                    self.weeklyMoodData = tempData
+                    completion(true)
+                }
+            }
+    }
+    
     func fetchWeeklyMoods(completion: @escaping (Bool) -> Void) {
         guard let userId = Auth.auth().currentUser?.uid else {
             completion(false)
