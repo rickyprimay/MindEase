@@ -17,6 +17,7 @@ class MoodViewModel: ObservableObject {
     @Published var moodSaved: Bool = false
     @Published var todayMood: String? = nil
     @Published var weeklyMoodData: [String: String] = [:]
+    @Published var allMoodData: [String: String] = [:]
     
     private let db = Firestore.firestore()
     
@@ -106,7 +107,7 @@ class MoodViewModel: ObservableObject {
                     }
                 }
                 DispatchQueue.main.async {
-                    self.weeklyMoodData = tempData
+                    self.allMoodData = tempData
                     completion(true)
                 }
             }
@@ -117,14 +118,14 @@ class MoodViewModel: ObservableObject {
             completion(false)
             return
         }
-
+        
         let calendar = Calendar.current
         let today = Date()
         let db = Firestore.firestore()
         
         let group = DispatchGroup()
         var tempData: [String: String] = [:]
-
+        
         for i in 0..<7 {
             if let date = calendar.date(byAdding: .day, value: -i, to: today) {
                 let dateString = date.formattedDateString()
@@ -144,13 +145,13 @@ class MoodViewModel: ObservableObject {
                     }
             }
         }
-
+        
         group.notify(queue: .main) {
             self.weeklyMoodData = tempData
             completion(true)
         }
     }
-
+    
     func calculateMoodScoreNormalized() -> Double {
         let moodScores: [String: Int] = [
             "Gembira": 4,

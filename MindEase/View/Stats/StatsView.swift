@@ -17,17 +17,13 @@ struct StatsView: View {
                 .ignoresSafeArea()
             
             ScrollView {
-                VStack(spacing: 16) {
-                    Text("Riwayat Mood Kamu")
-                        .font(AppFont.Poppins.bold(24))
-                        .padding(.top, 24)
-                    
+                VStack(spacing: 16) {                    
                     if moodViewModel.weeklyMoodData.isEmpty {
                         Text("Belum ada data mood.")
                             .foregroundColor(.gray)
                             .padding()
                     } else {
-                        ForEach(moodViewModel.weeklyMoodData.sorted(by: { $0.key > $1.key }), id: \.key) { date, mood in
+                        ForEach(moodViewModel.allMoodData.sorted(by: { $0.key > $1.key }), id: \.key) { date, mood in
                             HStack(spacing: 16) {
                                 Image(MoodImage.imageName(for: mood))
                                     .resizable()
@@ -55,6 +51,7 @@ struct StatsView: View {
                 }
             }
         }
+        .navigationTitle("Status Mood")
         .onAppear {
             moodViewModel.fetchAllMoods { success in
                 if success {  }
